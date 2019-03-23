@@ -27,8 +27,11 @@ cd build
 
 %install
 rm -rf $RPM_BUILD_ROOT
+install -d $RPM_BUILD_ROOT%{_sysconfdir}
 %{__make} -C build install \
 	DESTDIR=$RPM_BUILD_ROOT
+
+cp -p etc/et.cfg $RPM_BUILD_ROOT%{_sysconfdir}
 
 %clean
 rm -rf $RPM_BUILD_ROOT
@@ -36,6 +39,7 @@ rm -rf $RPM_BUILD_ROOT
 %files
 %defattr(644,root,root,755)
 %doc README.md
+%config(noreplace) %verify(not md5 mtime size) %{_sysconfdir}/et.cfg
 %attr(755,root,root) %{_bindir}/et
 %attr(755,root,root) %{_bindir}/etserver
 %attr(755,root,root) %{_bindir}/etterminal
